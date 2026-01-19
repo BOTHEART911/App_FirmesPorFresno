@@ -1,0 +1,36 @@
+{
+  "id": "/App_FirmesPorFresno/",
+  "name": "FIRMES POR FRESNO",
+  "short_name": "FIRMES POR FRESNO",
+  "start_url": "/App_FirmesPorFresno/",
+  "scope": "/App_FirmesPorFresno/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff7c39",
+  "capture_links": "existing-client-navigate",
+  "launch_handler": { "client_mode": "navigate-existing" },
+
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://botheart911.github.io/App_FirmesPorFresno/manifest.webmanifest",
+      "id": "/App_FirmesPorFresno/"
+    }
+  ],
+
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dqqeavica/image/upload/v1768781041/logo_fxf_oerpgl.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://res.cloudinary.com/dqqeavica/image/upload/v1768781041/logo_fxf_oerpgl.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
