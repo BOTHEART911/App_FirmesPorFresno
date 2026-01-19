@@ -2838,7 +2838,7 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
       try{
         const r = await apiGet('validarLider', { documento: currentUser.documento });
         if(r && r.codigo && r.nombre){
-         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran equipo *Firmes Por Fresno*.\n\nInstala la App y regístrate aquí 👉 " + "https://tinyurl.com/APP-GUSTAVO-CASTANO" + " 👈\n\nEn el campo *Nombre del Líder* por favor escribe y selecciona mi nombre.\n\nEn esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\nCordialmente,\n\n*" + r.nombre + "*\n> Equipo Firmes por Fresno";
+         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran equipo *Firmes Por Fresno*.\n\nInstala la App y regístrate aquí 👉 " + "https://tinyurl.com/App-FirmesPorFresno" + " 👈\n\nEn el campo *Nombre del Líder* por favor escribe y selecciona mi nombre.\n\nEn esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\nCordialmente,\n\n*" + r.nombre + "*\n> Equipo Firmes por Fresno";
           const textoEscapado = encodeURIComponent(msg);
           const esMovil = /android|iphone|ipad|mobile/i.test(navigator.userAgent);
           if(navigator.clipboard){ navigator.clipboard.writeText(msg).catch(()=>{}); }
@@ -3161,7 +3161,7 @@ function renderContactos(items){
     
     // COMPARTIR PORTAL
     document.getElementById('btn-compartir').addEventListener('click', ()=>{
-  const url = "https://tinyurl.com/APP-GUSTAVO-CASTANO";
+  const url = "https://tinyurl.com/App-FirmesPorFresno";
   const txt = "Instala la *App Firmes por Fresno* 📲 y regístrate con un clic:\n" + url;
   if(navigator.clipboard){ navigator.clipboard.writeText(txt).catch(()=>{}); }
   const enc = encodeURIComponent(txt);
