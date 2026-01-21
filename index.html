@@ -1392,7 +1392,7 @@
       </div>
     </div>
 
-    <!-- LÍDERES (se controla visibilidad desde JS) -->
+        <!-- LÍDERES (se controla visibilidad desde JS) -->
     <div class="menu-section-block" id="cat-lideres-block">
       <button class="menu-btn menu-cat-btn" data-cat="cat-lideres">
         <span>LÍDERES</span>
@@ -1400,6 +1400,12 @@
       <div id="cat-lideres" class="menu-cat-options">
         <button class="menu-btn" id="go-lider">Refiere por Whatsapp 📤</button>
         <button class="menu-btn" id="go-referidos">Mis Referidos 🔢</button>
+
+        <!-- BOTONES ESPECIALES SOLO PARA LÍDERES AUTORIZADOS -->
+        <button class="menu-btn" id="go-agenda">Nuestra Agenda 📆</button>
+        <button class="menu-btn" id="go-servicios">Portal de Sevicios 💼</button>
+        <button class="menu-btn" id="go-asistir">Gestión de Asistencias ✅</button>
+        <button class="menu-btn" id="go-appcomercial">App Comercial 🛒</button>
       </div>
     </div>
 
@@ -2345,6 +2351,12 @@ function stopLoading(){
     // Estado
     let currentUser = null;
 
+     // Lista de líderes autorizados para ver botones especiales
+    const AUTH_LEADERS = [
+      '1070590350'
+    ];
+    
+
     // Helpers de vistas
   function showView(id){
   for(const el of document.querySelectorAll('.view')) el.classList.remove('active');
@@ -2396,20 +2408,33 @@ function stopLoading(){
       }catch(e){ /* silencio */ }
     }
 
-           // Ocultar completamente la categoría LÍDERES si no es líder
+            // Ocultar completamente la categoría LÍDERES si no es líder
     function updateLeaderUI(isLeader){
       try{
         const catLideresBlock = document.getElementById('cat-lideres-block');
         const btnLider        = document.getElementById('go-lider');
         const btnReferidos    = document.getElementById('go-referidos');
 
+        const btnAgenda       = document.getElementById('go-agenda');
+        const btnServicios    = document.getElementById('go-servicios');
+        const btnAsistir    = document.getElementById('go-asistir');
+        const btnAppComercial = document.getElementById('go-appcomercial');
+
         const show = !!isLeader;
+        const isAuth = !!(currentUser && AUTH_LEADERS.includes(String(currentUser.documento || '').trim()));
 
         if (catLideresBlock) catLideresBlock.style.display = show ? '' : 'none';
         if (btnLider)        btnLider.style.display        = show ? '' : 'none';
         if (btnReferidos)    btnReferidos.style.display    = show ? '' : 'none';
+
+        // Estos tres solo para líderes autorizados por documento
+        if (btnAgenda)       btnAgenda.style.display       = (show && isAuth) ? '' : 'none';
+        if (btnServicios)    btnServicios.style.display    = (show && isAuth) ? '' : 'none';
+        if (btnAsistir)    btnAsistir.style.display    = (show && isAuth) ? '' : 'none';
+        if (btnAppComercial) btnAppComercial.style.display = (show && isAuth) ? '' : 'none';
       }catch(_){}
     }
+    updateLeaderUI(false);
     
     // Choices (select con filtro)
     let choicesReg = null, choicesUpd = null, choicesCom = null;
@@ -2516,9 +2541,12 @@ function stopLoading(){
       playSoundOnce(SOUNDS.login);
       showView('view-menu');
 
-      // En segundo plano: feed + badge + mostrar botón de líder si aplica
+            // En segundo plano: feed + badge + mostrar botón de líder si aplica
       try{ sessionStorage.removeItem(FEED_SOUND_KEY); }catch(_){}
       loadFeed().then(()=> refreshNotificationsBadge()).catch(()=>{});
+
+      // isLeader viene del backend (controla visibilidad general de la categoría)
+      // updateLeaderUI decide además si muestra los 3 botones especiales según AUTH_LEADERS
       updateLeaderUI(!!res.isLeader);
 
     } else {
@@ -2863,6 +2891,98 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
   overlay.classList.remove('open');
   showView('view-feed');
 });
+
+    // NUEVOS: BOTONES SOLO PARA LÍDERES AUTORIZADOS
+    const btnAgendaPriv = document.getElementById('go-agenda');
+    if (btnAgendaPriv){
+      btnAgendaPriv.addEventListener('click', ()=>{
+        overlay.classList.remove('open');
+        window.open('https://botheart911.github.io/agendaPriv-Jhonny-Perdomo/', '_blank');
+      });
+    }
+
+    const btnServiciosPriv = document.getElementById('go-servicios');
+    if (btnServiciosPriv){
+      btnServiciosPriv.addEventListener('click', ()=>{
+        overlay.classList.remove('open');
+        window.open('https://botheart911.github.io/servicios-jhonny-perdomo/', '_blank');
+      });
+    }
+
+     const btnAsistirPriv = document.getElementById('go-asistir');
+    if (btnAsistirPriv){
+      btnAsistirPriv.addEventListener('click', ()=>{
+        overlay.classList.remove('open');
+        window.open('https://botheart911.github.io/asistencia-jhonny-perdomo/#instalar', '_blank');
+      });
+    }
+
+    const btnAppComercial = document.getElementById('go-appcomercial');
+    if (btnAppComercial){
+      btnAppComercial.addEventListener('click', ()=>{
+        Swal.fire({
+          icon: 'success',
+          title: 'App Comercial disponible',
+          html: `
+            <div style="text-align:center; margin-top:8px;">
+              <p style="margin:0 0 10px;"><b>Puedes instalar o compartir la App Comercial ahora mismo.</b></p>
+              <p style="margin:0;">Selecciona una opción:</p>
+            </div>
+          `,
+          showConfirmButton: false,
+          showCancelButton: false,
+          footer: `
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+              <button id="appcom-instalar" class="swal2-confirm swal2-styled" style="display:block; width:100%;">
+                Instalar
+              </button>
+              <button id="appcom-compartir" class="swal2-confirm swal2-styled" style="display:block; width:100%; background:#10b981; border-color:#10b981;">
+                Compartir
+              </button>
+              <button id="appcom-cerrar" class="swal2-cancel swal2-styled" style="display:block; width:100%;">
+                Cerrar
+              </button>
+            </div>
+          `,
+          soundTag: 'success'
+        });
+
+        // Asignar listeners a los botones del footer
+        setTimeout(()=>{
+          const bInstalar = document.getElementById('appcom-instalar');
+          const bCompartir = document.getElementById('appcom-compartir');
+          const bCerrar = document.getElementById('appcom-cerrar');
+
+          if (bInstalar){
+            bInstalar.addEventListener('click', ()=>{
+              window.open('https://botheart911.github.io/comercio-jhonny-perdomo/#instalar', '_blank');
+            });
+          }
+
+          if (bCompartir){
+            bCompartir.addEventListener('click', async ()=>{
+              const texto = 'Instala nuestra App Comercial: https://tinyurl.com/comercio-jhonny-perdomo';
+              try{
+                if (navigator.clipboard && navigator.clipboard.writeText){
+                  await navigator.clipboard.writeText(texto);
+                }
+              }catch(_){}
+              const enc = encodeURIComponent(texto);
+              const esMovil = /android|iphone|ipad|mobile/i.test(navigator.userAgent);
+              const waUrl = (esMovil ? 'whatsapp://send?text=' : 'https://api.whatsapp.com/send?text=') + enc;
+              window.open(waUrl, '_blank');
+            });
+          }
+
+          if (bCerrar){
+            bCerrar.addEventListener('click', ()=>{
+              Swal.close();
+              overlay.classList.add('open');
+            });
+          }
+        }, 50);
+      });
+    }
 
    /* ==== NOTIFICACIONES: feed, no leídas, badge, sonido ==== */
 let FEED_CACHE = []; // último listado obtenido
