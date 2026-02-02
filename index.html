@@ -2806,6 +2806,39 @@ if (!telefonoRegex.test(formData.telefono)) {
   showView('view-login');
 });
 
+function resetRegistroForm(){
+  // Limpia inputs del registro
+  const regNombre = document.getElementById('reg-nombre');
+  const regTel    = document.getElementById('reg-telefono');
+  const regRes    = document.getElementById('reg-residencia');
+  const regZona   = document.getElementById('reg-zona');
+  const regRef    = document.getElementById('reg-referencia');
+
+  if (regNombre) regNombre.value = '';
+  if (regTel)    regTel.value = '';
+  if (regZona)   regZona.value = '';
+  if (regRef)    regRef.value = '';
+
+  // Reset del select (Choices)
+  if (regRes){
+    regRes.value = '';
+    try{
+      if (typeof choicesReg !== 'undefined' && choicesReg){
+        choicesReg.setChoiceByValue('');
+      }
+    }catch(_){}
+  }
+
+  // Ocultar el bloque "referido" y restaurar botones
+  const wrap = document.getElementById('reg-referido-wrap');
+  const mas  = document.getElementById('btn-ref-mas');
+  const menos= document.getElementById('btn-ref-menos');
+
+  if (wrap)  wrap.style.display = 'none';
+  if (mas)   mas.classList.remove('hidden');
+  if (menos) menos.classList.add('hidden');
+}
+    
     document.getElementById('go-asistencia').addEventListener('click', async ()=>{
       overlay.classList.remove('open');
       await prepararAsistencia();
@@ -2857,6 +2890,7 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
   try{ sessionStorage.removeItem(FEED_SOUND_KEY); }catch(_){}
   currentUser = null;
   docLogin.value = '';
+  resetRegistroForm();     
   regCard.style.display='none';
 
   // Oculta botón de líder al salir
